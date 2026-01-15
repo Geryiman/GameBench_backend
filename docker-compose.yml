@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  # --- BASE DE DATOS COMPARTIDA ---
+  mongo:
+    image: mongo:6.0
+    container_name: gamebench_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - gamebench-net
+
+  # --- MICROSERVICIOS ---
+  
+  # 1. Servicio de Usuarios (Auth & Perfil)
+  users-service:
+    build: ./users-service
+    container_name: gb_users
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - MONGO_URI=mongodb://mongo:27017/gamebench_users_db
+    depends_on:
+      - mongo
+    networks:
+      - gamebench-net
+
+  # 2. Servicio de Catálogo (Juegos & APIs Externas)
+  catalog-service:
+    build: ./catalog-service
+    container_name: gb_catalog
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - MONGO_URI=mongodb://mongo:27017/gamebench_catalog_db
+    depends_on:
+      - mongo
+    networks:
+      - gamebench-net
+
+  # 3. Servicio de Reviews (Lógica de Negocio)
+  reviews-service:
+    build: ./reviews-service
+    container_name: gb_reviews
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - MONGO_URI=mongodb://mongo:27017/gamebench_reviews_db
+    depends_on:
+      - mongo
+    networks:
+      - gamebench-net
+
+  # --- API GATEWAY (Punto de Entrada Único) ---
+  api-gateway:
+    build: ./api-gateway
+    container_name: gb_gateway
+    ports:
+      - "8080:8080" # Este es el puerto que usará el Frontend
+    environment:
+      - PORT=8080
+      - USERS_SERVICE_URL=http://users-service:3001
+      - CATALOG_SERVICE_URL=http://catalog-service:3002
+      - REVIEWS_SERVICE_URL=http://reviews-service:3003
+    depends_on:
+      - users-service
+      - catalog-service
+      - reviews-service
+    networks:
+      - gamebench-net
+
+# Red interna para que se vean entre ellos
+networks:
+  gamebench-net:
+    driver: bridge
+
+# Persistencia de datos de Mongo
+volumes:
+  mongo_data:
