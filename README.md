@@ -28,7 +28,7 @@ Siga estos pasos para iniciar el entorno de desarrollo local:
 
 Clonar el repositorio
 
-git clone <url-del-repositorio>
+git clone https://github.com/Geryiman/GameBench_backend.git
 cd gamebench-backend
 
 
