@@ -1,160 +1,248 @@
-GameBench Backend API
+<div align="center">
 
-Este repositorio aloja la arquitectura de backend para la plataforma GameBench. El sistema está construido utilizando una arquitectura de microservicios orquestada mediante Docker, diseñada para desacoplar la gestión de usuarios, el catálogo de videojuegos y la lógica de reseñas.
+<!-- TÍTULO Y BANNER -->
 
-Arquitectura del Sistema
+🎮 GameBench Backend API
 
-El sistema expone un único punto de entrada (API Gateway) que redirige el tráfico a los servicios internos correspondientes.
+<img src="https://www.google.com/search?q=https://via.placeholder.com/1200x300/0d1117/ffffff%3Ftext%3DGameBench%2BArchitecture" alt="GameBench Banner" width="100%" />
 
-API Gateway (Puerto 8080): Punto de entrada único para el cliente.
+<p>
+<b>Plataforma de microservicios distribuidos para la gestión, análisis y predicción de rendimiento en videojuegos.</b>
+</p>
 
-Users Service (Puerto 3001): Gestión de identidad y perfiles de hardware.
+<!-- BADGES -->
 
-Catalog Service (Puerto 3002): Integración con IGDB/Steam y gestión de juegos.
+<p>
+<img src="https://www.google.com/search?q=https://img.shields.io/badge/Node.js-v18-339933%3Fstyle%3Dfor-the-badge%26logo%3Dnode.js%26logoColor%3Dwhite" alt="NodeJS" />
+<img src="https://www.google.com/search?q=https://img.shields.io/badge/Docker-Enabled-2496ED%3Fstyle%3Dfor-the-badge%26logo%3Ddocker%26logoColor%3Dwhite" alt="Docker" />
+<img src="https://www.google.com/search?q=https://img.shields.io/badge/MongoDB-Ready-47A248%3Fstyle%3Dfor-the-badge%26logo%3Dmongodb%26logoColor%3Dwhite" alt="MongoDB" />
+<img src="https://www.google.com/search?q=https://img.shields.io/badge/Microservices-Arch-E34F26%3Fstyle%3Dfor-the-badge%26logo%3Dserverless%26logoColor%3Dwhite" alt="Architecture" />
+</p>
 
-Reviews Service (Puerto 3003): Gestión de reseñas y algoritmo de predicción.
+<!-- MENÚ RÁPIDO -->
 
-Pre-requisitos
+<p>
+<a href="#-descripción-general">📌 Descripción</a> •
+<a href="#-arquitectura-del-sistema">🏗️ Arquitectura</a> •
+<a href="#-stack-tecnológico">🛠️ Stack</a> •
+<a href="#-instalación-y-ejecución">🚀 Despliegue</a> •
+<a href="#-documentación-de-endpoints">📄 API Docs</a>
+</p>
 
-Docker Desktop (versión reciente)
+</div>
 
-Git
+📌 Descripción General
 
-No es necesaria la instalación local de Node.js o MongoDB, ya que el entorno está completamente contenerizado.
+GameBench es una solución backend robusta diseñada para centralizar la información técnica y artística de videojuegos. Su núcleo reside en la capacidad de predecir el rendimiento (FPS) en diferentes configuraciones de hardware mediante algoritmos de comparación.
 
-Instalación y Ejecución
+✨ Características Principales
 
-Siga estos pasos para iniciar el entorno de desarrollo local:
+👤 Gestión de Identidad: Usuarios, roles y perfiles de hardware (CPU/GPU).
 
-Clonar el repositorio
+🎮 Catálogo Sincronizado: Integración preparada para APIs externas (IGDB/Steam).
 
-git clone https://github.com/Geryiman/GameBench_backend.git
+⭐ Sistema de Reseñas: Feedback técnico y artístico de la comunidad.
+
+📈 Motor de Predicción: Estimación de rendimiento basada en benchmarks de hardware.
+
+🏗️ Arquitectura del Sistema
+
+El proyecto sigue un patrón de Microservicios orquestados, donde cada dominio de negocio está aislado en su propio contenedor.
+
+🔌 Mapa de Puertos y Servicios
+
+Servicio
+
+Puerto
+
+Responsabilidad
+
+🛡️ API Gateway
+
+8080
+
+Entrypoint. Enrutamiento, Rate Limiting y Auth Guard.
+
+👤 Users Service
+
+3001
+
+Autenticación (JWT), gestión de perfiles y hardware.
+
+📚 Catalog Service
+
+3002
+
+Búsqueda, filtrado y detalles de videojuegos.
+
+📝 Reviews Service
+
+3003
+
+Lógica de reseñas y cálculo de predicciones (FPS).
+
+📂 Estructura del Proyecto
+
+GameBench_backend/
+├── api-gateway/         # Nginx o servicio Node de entrada
+├── users-service/       # Microservicio de Usuarios
+├── catalog-service/     # Microservicio de Catálogo
+├── reviews-service/     # Microservicio de Reseñas
+├── docker-compose.yml   # Orquestación de contenedores
+└── README.md            # Documentación
+
+
+🛠️ Stack Tecnológico
+
+<div align="center">
+
+Core
+
+Infraestructura
+
+Datos
+
+<img src="https://www.google.com/search?q=https://skillicons.dev/icons%3Fi%3Dnodejs,express" />
+
+<img src="https://www.google.com/search?q=https://skillicons.dev/icons%3Fi%3Ddocker,nginx,git" />
+
+<img src="https://www.google.com/search?q=https://skillicons.dev/icons%3Fi%3Dmongodb" />
+
+Node.js + Express
+
+Docker + Gateway
+
+MongoDB
+
+</div>
+
+✅ Pre-requisitos
+
+El entorno está diseñado para ser agnóstico al Sistema Operativo. No necesitas instalar Node.js ni bases de datos localmente.
+
+[x] Docker Desktop (Daemon corriendo)
+
+[x] Git
+
+🚀 Instalación y Ejecución
+
+Sigue estos pasos para levantar el ecosistema completo:
+
+1️⃣ Clonar el repositorio
+
+git clone [https://github.com/Geryiman/GameBench_backend.git](https://github.com/Geryiman/GameBench_backend.git)
 cd gamebench-backend
 
 
-Iniciar los servicios
-Ejecute el siguiente comando en la raíz del proyecto para construir las imágenes e iniciar los contenedores:
+2️⃣ Iniciar Contenedores (Docker Compose)
+
+Este comando descargará las imágenes necesarias y levantará la red virtual.
 
 docker-compose up --build
 
 
-Verificación
-El sistema estará operativo cuando los logs indiquen que los servicios están escuchando en sus respectivos puertos.
+⏳ Nota: La primera ejecución puede tomar unos minutos mientras se construyen las imágenes y se descargan los volúmenes de MongoDB.
 
-Base URL para Frontend: http://localhost:8080
+📄 Documentación de Endpoints
 
-Documentación de Endpoints (API Reference)
+Ejemplos rápidos de consumo de la API a través del Gateway (Puerto 8080).
 
-Nota Importante: Todas las peticiones deben dirigirse exclusivamente al API Gateway (http://localhost:8080). No se debe acceder directamente a los microservicios.
-
-1. Servicio de Usuarios (Auth & Profile)
-
-Base path: /api/auth
+<details>
+<summary>🔐 <b>Auth & Usuarios</b></summary>
 
 Método
 
 Endpoint
 
-Estado (Semana 2)
-
 Descripción
 
 POST
 
-/login
+/api/auth/register
 
-Mock
-
-Retorna un token JWT simulado para pruebas de sesión.
+Registrar nuevo usuario
 
 POST
 
-/register
+/api/auth/login
 
-Mock
-
-Simula el registro de un nuevo usuario.
+Iniciar sesión (Retorna JWT)
 
 GET
 
-/profile
+/api/users/profile
 
-Mock
+Obtener perfil (Requiere Token)
 
-Retorna datos de usuario y especificaciones de hardware (CPU/GPU).
+</details>
 
-2. Servicio de Catálogo (Games)
-
-Base path: /api/games
+<details>
+<summary>🎮 <b>Catálogo de Juegos</b></summary>
 
 Método
 
 Endpoint
 
-Estado (Semana 2)
-
 Descripción
 
 GET
 
-/search?q={term}
+/api/games
 
-Mock
-
-Retorna resultados de búsqueda simulados (preparado para IGDB).
+Listar todos los juegos
 
 GET
 
-/details/{id}
+/api/games/:id
 
-Mock
+Detalle de un juego específico
 
-Retorna detalles del juego y requisitos técnicos mínimos/recomendados.
+GET
 
-3. Servicio de Reseñas (Core)
+/api/games/search?q=
 
-Base path: /api/reviews
+Buscar por nombre
+
+</details>
+
+<details>
+<summary>⭐ <b>Reseñas y Predicciones</b></summary>
 
 Método
 
 Endpoint
 
-Estado (Semana 2)
-
 Descripción
+
+POST
+
+/api/reviews
+
+Crear una reseña
 
 GET
 
-/game/{gameId}
+/api/reviews/game/:id
 
-Mock
-
-Lista las reseñas asociadas a un ID de juego específico.
+Ver reseñas de un juego
 
 POST
 
-/create
+/api/predict/fps
 
-Mock
+Calcular FPS estimados
 
-Endpoint para la creación de nuevas reseñas (técnicas y artísticas).
+</details>
 
-POST
+<div align="center">
 
-/predict
 
-Mock
 
-Recibe especificaciones de hardware y retorna una predicción de rendimiento (FPS).
 
-Tecnologías Utilizadas
 
-Runtime: Node.js v20 (Alpine Linux distribution)
-
-Framework: Express.js
-
-Base de Datos: MongoDB (Database-per-service pattern)
-
-Infraestructura: Docker & Docker Compose
-
-Proxy: Express HTTP Proxy
+<p>Made with ❤️ by the <b>GameBench Team</b></p>
+<p>
+<a href="https://www.google.com/search?q=https://github.com/Geryiman/GameBench_backend/issues">Reportar Bug</a> •
+<a href="https://www.google.com/search?q=https://github.com/Geryiman/GameBench_backend/pulls">Contribuir</a>
+</p>
+</div>
